@@ -58,7 +58,7 @@ Weed Processing Table Location:
 vector3(-36.9, -2689.80, 6.0)
 
 For testing:
-Use: /tp vector3(-36.9, -2689.80, 6.0)
+Use: /tp -36.9, -2689.80, 6.0
 
 ---
 
