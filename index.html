@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plant Status</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+    .plant-status-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(34, 34, 34, 0.8),
+        rgba(34, 34, 34, 0.8) 10px,
+        rgba(0, 0, 0, 0.8) 10px,
+        rgba(0, 0, 0, 0.8) 20px
+      );
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #00bfff;
+      box-shadow: 0 0 15px 2px #00bfff;
+      width: 350px;
+      text-align: center;
+    }
+    .plant-status-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 191, 255, 0.8);
+      padding-bottom: 10px;
+    }
+    .plant-status-header i {
+      font-size: 28px;
+      margin-right: 10px;
+      color: #39FF14;
+    }
+    .plant-status-header h1 {
+      font-size: 24px;
+      margin: 0;
+      color: #00bfff;
+    }
+    .plant-status-content p {
+      margin: 8px 0;
+      font-size: 16px;
+      text-align: center;
+    }
+    .plant-status-footer {
+      margin-top: 15px;
+      text-align: center;
+    }
+    .plant-status-footer button {
+      background: #00bfff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #fff;
+      transition: background 0.3s;
+    }
+    .plant-status-footer button:hover {
+      background: #009acd;
+    }
+  </style>
+</head>
+<body>
+
+<!-- /DEVSNIPPET -->
+<script>
+  // For coding purposes, vscode live server viewer ETC.
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      window.postMessage({
+        data: {
+          action: "showPlantStatus",
+          data: {
+            label: "White Widow",
+            health: 82,
+            food: 65,
+            water: 77,
+            progress: 45,
+            stage: "Flowering"
+          }
+        }
+      }, "*");
+    }, 800);
+  });
+</script>
+<!-- /DEV SNIPPET -->
+
+  <div class="plant-status-container" id="plantStatusContainer" style="display: none;">
+    <div class="plant-status-header">
+      <i class="fas fa-cannabis"></i>
+      <h1 id="plantTitle">Plant Status</h1>
+    </div>
+    <div class="plant-status-content">
+      <p id="plantType">Type: </p>
+      <p id="plantHealth">Health: </p>
+      <p id="plantFood">Fertilizer: </p>
+      <p id="plantWater">Water: </p>
+      <p id="plantProgress">Progress: </p>
+      <p id="plantStage">Stage: </p>
+    </div>
+    <div class="plant-status-footer">
+      <button onclick="closeUI()">Close</button>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('message', function(event) {
+      if (event.data.action === "showPlantStatus") {
+        document.getElementById("plantStatusContainer").style.display = "block";
+        document.getElementById("plantTitle").innerText = "Plant Status";
+        document.getElementById("plantType").innerText = "Type: " + event.data.data.label;
+        document.getElementById("plantHealth").innerText = "Health: " + event.data.data.health + "%";
+        document.getElementById("plantFood").innerText = "Fertilizer: " + event.data.data.food + "%";
+        document.getElementById("plantWater").innerText = "Water: " + event.data.data.water + "%";
+        document.getElementById("plantProgress").innerText = "Progress: " + event.data.data.progress + "%";
+        document.getElementById("plantStage").innerText = "Stage: " + event.data.data.stage;
+      }
+    });
+    
+    function closeUI() {
+      document.getElementById("plantStatusContainer").style.display = "none";
+      if (typeof GetParentResourceName === "function") {
+        fetch(`https://${GetParentResourceName()}/closePlantStatus`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+          body: JSON.stringify({})
+        }).then(resp => resp.json()).then(() => {});
+      }
+    }
+  </script>
+</body>
+</html>
